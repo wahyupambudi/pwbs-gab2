@@ -26,7 +26,7 @@
     <!-- buat area table -->
     <table>
         <!-- judul table -->
-        <!-- judul -->
+        <!-- juduls -->
         <thead>
             <tr>
                 <!-- th*6 untuk membuat th 6 -->
