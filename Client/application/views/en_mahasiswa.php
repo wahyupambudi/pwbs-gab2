@@ -17,6 +17,8 @@
         <button id="btn-refresh" class="btn-secondary" onclick="return setRefresh()">Refresh Data</button>
     </nav>
 
+    <script src="<?php echo base_url("ext/script.js"); ?>"></script>
+
     <!-- area for entry data mahasiswa -->
 
     <main class="area-grid">
@@ -51,7 +53,7 @@
             </label>
         </section>
         <section class="item-input3">
-            <input type="text" id="txt_telepon" class="text-input" maxlength="15">
+            <input type="text" id="txt_telepon" class="text-input" maxlength="15" onkeypress="return setNumber(event)">
         </section>
         <section class="item-error3">
             <p id="err_telepon" class="error-info"></p>
@@ -187,6 +189,7 @@
                     txt_npm.value, txt_nama.value, txt_telepon.value, cbo_jurusan.value
                 )
             }
+
             // alert(`Jurusan : ${cbo_jurusan.selectedIndex}`);
             // alert("Jurusan " + cbo_jurusan.selectedIndex);
 
