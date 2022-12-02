@@ -1,6 +1,13 @@
-<IfModule authz_core_module>
-    Require all denied
-</IfModule>
-<IfModule !authz_core_module>
-    Deny from all
-</IfModule>
+# blok folder
+Options -Indexes
+
+# direct 403
+ErrorDocument 403 "http://localhost/pwbs-gab2/client/index.php/E403"
+ErrorDocument 404 "http://localhost/pwbs-gab2/client/index.php/E404"
+
+# menghilangkan index.php
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
