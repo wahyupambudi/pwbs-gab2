@@ -1,6 +1,6 @@
 // script untuk membatasi inputan number
 const setNumber = (e) => {
-    // alternatif bisa pakai jquery masking
+    // alternatif bisa pakai jquery masking 
     // For key or mouse events, this property indicates the specific key or button that was pressed
     let key_code = (document) ? e.keyCode : e.which;
 
