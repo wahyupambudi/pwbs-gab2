@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Mmahasiswa extends CI_Model {
 
     // buat method untuk tampil data
-    function get_data() 
+    function get_data($token) 
     {
         // kalau cuma 1 field
         // $this->db->from("npm");   
@@ -23,7 +23,14 @@ class Mmahasiswa extends CI_Model {
             jurusan AS jurusan_mhs
         ");
 
-        $this->db->from("tb_mahasiswa");   
+        $this->db->from("tb_mahasiswa");
+        
+        // jika token terisi
+        // if($token != "") {} opsi lain
+        if(!empty($token)) {
+            $this->db->where("TO_BASE64(npm) = '$token' OR TO_BASE64(nama) = '$token' ");
+        }
+
         $this->db->order_by("npm", "DESC");
 
         $query = $this->db->get()->result();

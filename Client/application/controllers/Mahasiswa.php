@@ -59,5 +59,31 @@ class Mahasiswa extends CI_Controller {
 
 		echo json_encode(array("statusnya" => $save -> status));
 	}
+
+	// fungsi untuk update data
+	function updateMahasiswa() {
+		// membaca segment dari url, di hitung setelah index.php
+		// $token = $this->uri->total_segments(); -> total = 3
+
+		// ambil nilai npm
+		$token = $this->uri->segment(3);
+		// echo $token;
+
+		$tampil = json_decode(
+			$this->client->simple_get(APIMAHASISWA, array("npm" => $token))
+		);
+
+		foreach($tampil -> mahasiswa as $result) {
+			// echo $result->npm_mhs."<br>";
+			$data = array(
+				"npm" => $result->npm_mhs,
+				"nama" => $result->nama_mhs,
+				"telepon" => $result->telepon_mhs,
+				"jurusan" => $result->jurusan_mhs,
+				"token" => $token
+			);
+		}
+		$this->load->view('up_mahasiswa', $data);
+	}
 }
 ?>

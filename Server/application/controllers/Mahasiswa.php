@@ -18,6 +18,10 @@ class Mahasiswa extends Server
     // membuat fungsi GET
     function service_get()
     {
+
+        // ambil parameter token "(npm)"
+        $token = $this->delete("npm");
+
         // test menggunakan npm
         $npm = $this->get('npm');
 
@@ -27,13 +31,13 @@ class Mahasiswa extends Server
 
         if ($npm == '') {
             // panggil fungsi get_data
-            $mhs = $this->model->get_data();
+            $mhs = $this->model->get_data(base64_encode($token));
             $this->response(array("mahasiswa" => $mhs), 200);
         } else if ($npm != '') {
             // query where
             $this->db->where("npm", $npm);
             // panggil fungsi get_data
-            $mhs = $this->model->get_data();
+            $mhs = $this->model->get_data(base64_encode($token));
             $this->response(array("mahasiswa" => $mhs), 200);
         } else {
             $this->response(array("status" => "Data Tidak Ditemukan"), 404);
