@@ -98,9 +98,9 @@ class Mahasiswa extends Server
 
         // jika hasil = 0
         if ($hasil == 0) {
-            $mhs = $this->model->get_data();
+            // $mhs = $this->model->get_data();
             // $this->response(array("mahasiswa" => $mhs), 200);
-            $this->response(array("status" => "Data Mahasiswa Berhasil di Update", "mahasiswa" => $mhs), 200);
+            $this->response(array("status" => "Data Mahasiswa Berhasil di Update"), 200);
         }
         // jika hasil !=0
         else {

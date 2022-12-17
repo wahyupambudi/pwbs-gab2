@@ -95,6 +95,7 @@
         let token = '<?= $token; ?>'
         console.log(token);
 
+        // menampilkan data dari npm
         txt_npm.value = '<?= $npm; ?>'
         txt_nama.value = '<?= $nama; ?>'
         txt_telepon.value = '<?= $telepon; ?>'
@@ -102,7 +103,7 @@
 
         // inisialisasi object 
         let btn_lihat = document.getElementById("btn-lihat");
-        let btn_simpan = document.getElementById("btn-ubah");
+        let btn_ubah = document.getElementById("btn-ubah");
 
 
         btn_lihat.addEventListener('click', function () {
@@ -110,13 +111,13 @@
             location.href = '<?php echo base_url(); ?>'
         });
 
-        // membuat function refresh
+        // membuat function refresh sesuai dengan npm
         function setRefresh() {
-            location.href = '<?php echo site_url("Mahasiswa/addMahasiswa"); ?>';
+            location.href = '<?php echo site_url("Mahasiswa/updateMahasiswa/"); ?>' + '/' + token;
         }
 
         // event untuk btn simpan
-        btn_simpan.addEventListener('click', function () {
+        btn_ubah.addEventListener('click', function () {
             // inisialisasi object
             let lbl_npm = document.getElementById("lbl_npm");
             let txt_npm = document.getElementById("txt_npm");
@@ -198,49 +199,16 @@
             // jika komponen terisi
             // maksud nama[1] itu kosong, jadi kalau error nya kosong, maka dia jalanin, kalo kosong kan artinya si form input nya udah di isi cok :)
 
-            if (err_npm.innerHTML === "" && nama[1] === "" && telepon[1] === "" && jurusan[1] === "") {
-                // panggil method setSave
-                setSave(
-                    txt_npm.value, txt_nama.value, txt_telepon.value, cbo_jurusan.value
+            if (err_npm.innerHTML === "" && nama[1] === "" && telepon[1] === "" && jurusan[1] === "" ) {
+                // panggil method setUpdate
+                setUpdate(
+                    txt_npm.value, txt_nama.value, txt_telepon.value, cbo_jurusan.value, token
                 )
             }
-
-            // alert(`Jurusan : ${cbo_jurusan.selectedIndex}`);
-            // alert("Jurusan " + cbo_jurusan.selectedIndex);
-
-
-            // let status;
-            // ternary operator
-            // const nama = (txt_nama.value === "") ? 
-            // [
-            //     err_nama.style.display = "unset",
-            //     err_nama.innerHTML = "Nama Harus Di Isi",
-            //     lbl_nama.style.color = "#FF0000",
-            //     txt_nama.style.borderColor = "#FF0000",
-            //     // status = 0
-            // ] 
-            // :
-            // [
-            //     err_nama.style.display = "none",
-            //     err_nama.innerHTML = "",
-            //     lbl_nama.style.color = "unset",
-            //     txt_nama.style.borderColor = "unset",
-            //     // status = 1
-            // ]
-
-            // keunggulan ternary operator
-            // alert(nama[4])
-
-            // const hasil = (nama[4] === 0) ?
-            // alert("tesksa")
-            // : (nama[4] !== 1) ?
-            // alert("asdas")
-            // :
-            // alert("1212312")
         });
 
         // arrow function
-        const setSave = (npm, nama, telepon, jurusan) => {
+        const setUpdate = (npm, nama, telepon, jurusan, token) => {
             // function setSave(npm, nama, telepon, jurusan){
                 // buat variabel untuk form 
                 // bisa untuk meng upload file
@@ -251,9 +219,10 @@
                 form.append("namanya", nama);
                 form.append("teleponnya", telepon);
                 form.append("jurusannya", jurusan);
+                form.append("tokennya", token);
 
                 // proses kirim data ke controller
-                fetch('<?php echo site_url("Mahasiswa/setSave"); ?>', {
+                fetch('<?php echo site_url("Mahasiswa/setUpdate"); ?>', {
                     method: "POST",
                     body: form
                 })
