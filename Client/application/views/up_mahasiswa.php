@@ -106,7 +106,7 @@
         let btn_ubah = document.getElementById("btn-ubah");
 
 
-        btn_lihat.addEventListener('click', function () {
+        btn_lihat.addEventListener('click', function() {
             // alihkan ke halaman view mahasiswa
             location.href = '<?php echo base_url(); ?>'
         });
@@ -117,22 +117,18 @@
         }
 
         // event untuk btn simpan
-        btn_ubah.addEventListener('click', function () {
+        btn_ubah.addEventListener('click', function() {
             // inisialisasi object
             let lbl_npm = document.getElementById("lbl_npm");
-            let txt_npm = document.getElementById("txt_npm");
             let err_npm = document.getElementById("err_npm");
             // untuk nama
             let lbl_nama = document.getElementById("lbl_nama");
-            let txt_nama = document.getElementById("txt_nama");
             let err_nama = document.getElementById("err_nama");
             // untuk telepon
             let lbl_telepon = document.getElementById("lbl_telepon");
-            let txt_telepon = document.getElementById("txt_telepon");
             let err_telepon = document.getElementById("err_telepon");
             // untuk telepon
             let lbl_jurusan = document.getElementById("lbl_jurusan");
-            let cbo_jurusan = document.getElementById("cbo_jurusan");
             let err_jurusan = document.getElementById("err_jurusan");
 
             // jika npm kosong
@@ -151,55 +147,46 @@
             }
 
             // ternary operator
-            const nama = (txt_nama.value === "") ?
-                [
-                    err_nama.style.display = "unset",
-                    err_nama.innerHTML = "Nama Harus Di Isi",
-                    lbl_nama.style.color = "#FF0000",
-                    txt_nama.style.borderColor = "#FF0000",
-                ]
-                :
-                [
-                    err_nama.style.display = "none",
-                    err_nama.innerHTML = "",
-                    lbl_nama.style.color = "unset",
-                    txt_nama.style.borderColor = "unset",
-                ]
+            const nama = (txt_nama.value === "") ? [
+                err_nama.style.display = "unset",
+                err_nama.innerHTML = "Nama Harus Di Isi",
+                lbl_nama.style.color = "#FF0000",
+                txt_nama.style.borderColor = "#FF0000",
+            ] : [
+                err_nama.style.display = "none",
+                err_nama.innerHTML = "",
+                lbl_nama.style.color = "unset",
+                txt_nama.style.borderColor = "unset",
+            ]
 
-            const telepon = (txt_telepon.value === "") ?
-                [
-                    err_telepon.style.display = "unset",
-                    err_telepon.innerHTML = "Telepon Harus Di Isi",
-                    lbl_telepon.style.color = "#FF0000",
-                    txt_telepon.style.borderColor = "#FF0000",
-                ]
-                :
-                [
-                    err_telepon.style.display = nama[0],
-                    err_telepon.innerHTML = "",
-                    lbl_telepon.style.color = "unset", // bisa unset atau array
-                    txt_telepon.style.borderColor = "unset",
-                ]
+            const telepon = (txt_telepon.value === "") ? [
+                err_telepon.style.display = "unset",
+                err_telepon.innerHTML = "Telepon Harus Di Isi",
+                lbl_telepon.style.color = "#FF0000",
+                txt_telepon.style.borderColor = "#FF0000",
+            ] : [
+                err_telepon.style.display = nama[0],
+                err_telepon.innerHTML = "",
+                lbl_telepon.style.color = "unset", // bisa unset atau array
+                txt_telepon.style.borderColor = "unset",
+            ]
 
-            const jurusan = (cbo_jurusan.selectedIndex === 0) ?
-                [
-                    err_jurusan.style.display = "unset",
-                    err_jurusan.innerHTML = "Jurusan Harus Di Pilih",
-                    lbl_jurusan.style.color = "#FF0000",
-                    cbo_jurusan.style.borderColor = "#FF0000",
-                ]
-                :
-                [
-                    err_jurusan.style.display = "none",
-                    err_jurusan.innerHTML = "",
-                    lbl_jurusan.style.color = "unset",
-                    cbo_jurusan.style.borderColor = "unset",
-                ]
+            const jurusan = (cbo_jurusan.selectedIndex === 0) ? [
+                err_jurusan.style.display = "unset",
+                err_jurusan.innerHTML = "Jurusan Harus Di Pilih",
+                lbl_jurusan.style.color = "#FF0000",
+                cbo_jurusan.style.borderColor = "#FF0000",
+            ] : [
+                err_jurusan.style.display = "none",
+                err_jurusan.innerHTML = "",
+                lbl_jurusan.style.color = "unset",
+                cbo_jurusan.style.borderColor = "unset",
+            ]
 
             // jika komponen terisi
             // maksud nama[1] itu kosong, jadi kalau error nya kosong, maka dia jalanin, kalo kosong kan artinya si form input nya udah di isi cok :)
 
-            if (err_npm.innerHTML === "" && nama[1] === "" && telepon[1] === "" && jurusan[1] === "" ) {
+            if (err_npm.innerHTML === "" && nama[1] === "" && telepon[1] === "" && jurusan[1] === "") {
                 // panggil method setUpdate
                 setUpdate(
                     txt_npm.value, txt_nama.value, txt_telepon.value, cbo_jurusan.value, token
@@ -208,28 +195,44 @@
         });
 
         // arrow function
-        const setUpdate = (npm, nama, telepon, jurusan, token) => {
+        // penggunaan async
+        const setUpdate = async (npm, nama, telepon, jurusan, token) => {
             // function setSave(npm, nama, telepon, jurusan){
-                // buat variabel untuk form 
-                // bisa untuk meng upload file
-                let form = new FormData();
+            // buat variabel untuk form 
+            // bisa untuk meng upload file
+            let form = new FormData();
 
-                // isi / tambah nilai untuk form
-                form.append("npmnya", npm);
-                form.append("namanya", nama);
-                form.append("teleponnya", telepon);
-                form.append("jurusannya", jurusan);
-                form.append("tokennya", token);
+            // isi / tambah nilai untuk form
+            form.append("npmnya", npm);
+            form.append("namanya", nama);
+            form.append("teleponnya", telepon);
+            form.append("jurusannya", jurusan);
+            form.append("tokennya", token);
 
-                // proses kirim data ke controller
-                fetch('<?php echo site_url("Mahasiswa/setUpdate"); ?>', {
-                    method: "POST",
-                    body: form
-                })
-                .then((response) => response.json()) // response json dari mahasiswa
-                .then((result) => alert(result.statusnya))
-                .catch((error) => alert("Data Gagal Dikirim!"))
+            // penggunaan try n catch
+            try {
+                // kirim data ke controller
+                let response = await fetch(
+                    '<?php echo site_url("Mahasiswa/setUpdate"); ?>', {
+                        method: "POST",
+                        body: form
+                    }
+                );
+                // proses pembacaan hasil / result
+                let result = await response.json();
+
+                // tampilkan hasil
+                alert(result.statusnya);
+                location.href = '<?php echo base_url(); ?>'
+
+            } catch {
+                alert("Data Gagal Di Kirim");
+                // alert(error)
             }
+
+
+
+        }
     </script>
 
 </body>
