@@ -1,10 +1,15 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Mahasiswa extends CI_Controller {
+class Mahasiswa extends CI_Controller
+{
 
 	public function index()
 	{
+
+		// setup basic auth dengan username n password
+		$this->client->http_login("pwbs", "rest");
+
 		$data["tampil"] = json_decode(
 			$this->client->simple_get(APIMAHASISWA)
 		);
@@ -16,7 +21,11 @@ class Mahasiswa extends CI_Controller {
 		$this->load->view('vw_mahasiswa', $data);
 	}
 
-	function setDelete() {
+	function setDelete()
+	{
+		// setup basic auth dengan username n password
+		$this->client->http_login("pwbs", "rest");
+
 		// buat variabel json
 		$json = file_get_contents("php://input");
 		$hasil = json_decode($json);
@@ -24,7 +33,7 @@ class Mahasiswa extends CI_Controller {
 		$delete = json_decode(
 			$this->client->simple_delete(
 				APIMAHASISWA,
-				array("npm" => $hasil -> npmnya)
+				array("npm" => $hasil->npmnya)
 			)
 		);
 
@@ -34,15 +43,20 @@ class Mahasiswa extends CI_Controller {
 		// kirim hasil ke vw_mahasiswa
 		// status ini dapat dari file server controller mahasiswa 
 		// dari response ketika hasil == 1, diambil parameter status.
-		echo json_encode(array("statusnya" => $delete -> status));
+		echo json_encode(array("statusnya" => $delete->status));
 	}
 
-	function addMahasiswa() {
+	function addMahasiswa()
+	{
 		$this->load->view('en_mahasiswa');
 	}
 
 	// fungsi untuk simpan data
-	function setSave() {
+	function setSave()
+	{
+		// setup basic auth dengan username n password
+		$this->client->http_login("pwbs", "rest");
+
 		// baca nilai dari fetch
 		// menggunakan $data array
 		$data = array(
@@ -57,11 +71,15 @@ class Mahasiswa extends CI_Controller {
 			$this->client->simple_post(APIMAHASISWA, $data)
 		);
 
-		echo json_encode(array("statusnya" => $save -> status));
+		echo json_encode(array("statusnya" => $save->status));
 	}
 
 	// fungsi untuk update data
-	function updateMahasiswa() {
+	function updateMahasiswa()
+	{
+		// setup basic auth dengan username n password
+		$this->client->http_login("pwbs", "rest");
+
 		// membaca segment dari url, di hitung setelah index.php
 		// $token = $this->uri->total_segments(); -> total = 3
 
@@ -73,7 +91,7 @@ class Mahasiswa extends CI_Controller {
 			$this->client->simple_get(APIMAHASISWA, array("npm" => $token))
 		);
 
-		foreach($tampil -> mahasiswa as $result) {
+		foreach ($tampil->mahasiswa as $result) {
 			// echo $result->npm_mhs."<br>";
 			$data = array(
 				"npm" => $result->npm_mhs,
@@ -87,7 +105,11 @@ class Mahasiswa extends CI_Controller {
 	}
 
 	// fungsi update mahasiswa
-	function setUpdate() {
+	function setUpdate()
+	{
+		// setup basic auth dengan username n password
+		$this->client->http_login("pwbs", "rest");
+
 		// baca nilai dari fetch
 		// menggunakan $data array
 		$data = array(
@@ -102,8 +124,6 @@ class Mahasiswa extends CI_Controller {
 			$this->client->simple_put(APIMAHASISWA, $data)
 		);
 
-		echo json_encode(array("statusnya" => $update -> status));
+		echo json_encode(array("statusnya" => $update->status));
 	}
-
 }
-?>
