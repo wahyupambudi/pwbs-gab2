@@ -4,6 +4,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Mahasiswa extends CI_Controller
 {
 
+	// variabel global
+	// soon get from who is are login
+	// konfigurasi di backend cokk
+	// ex ketika user regis langsung kasih key
+	var $key_name = 'GAB2-API';
+	var $key_value = 'RESTAPI-GAB1';
+
+
 	public function index()
 	{
 
@@ -11,7 +19,7 @@ class Mahasiswa extends CI_Controller
 		$this->client->http_login("pwbs", "rest");
 
 		$data["tampil"] = json_decode(
-			$this->client->simple_get(APIMAHASISWA)
+			$this->client->simple_get(APIMAHASISWA, [$this->key_name => $this->key_value])
 		);
 
 		// foreach($data["tampil"] -> mahasiswa as $result) {
@@ -33,7 +41,10 @@ class Mahasiswa extends CI_Controller
 		$delete = json_decode(
 			$this->client->simple_delete(
 				APIMAHASISWA,
-				array("npm" => $hasil->npmnya)
+				array(
+					"npm" => $hasil->npmnya,
+					$this->key_name => $this->key_value
+				)
 			)
 		);
 
@@ -64,7 +75,8 @@ class Mahasiswa extends CI_Controller
 			"nama" => $this->input->post("namanya"),
 			"telepon" => $this->input->post("teleponnya"),
 			"jurusan" => $this->input->post("jurusannya"),
-			"token" => $this->input->post("npmnya")
+			"token" => $this->input->post("npmnya"),
+			$this->key_name => $this->key_value
 		);
 
 		$save = json_decode(
@@ -74,7 +86,7 @@ class Mahasiswa extends CI_Controller
 		echo json_encode(array("statusnya" => $save->status));
 	}
 
-	// fungsi untuk update data
+	// fungsi untuk update data menampilkan data
 	function updateMahasiswa()
 	{
 		// setup basic auth dengan username n password
@@ -88,7 +100,13 @@ class Mahasiswa extends CI_Controller
 		// echo $token;
 
 		$tampil = json_decode(
-			$this->client->simple_get(APIMAHASISWA, array("npm" => $token))
+			$this->client->simple_get(
+				APIMAHASISWA,
+				array(
+					"npm" => $token,
+					$this->key_name => $this->key_value
+				)
+			)
 		);
 
 		foreach ($tampil->mahasiswa as $result) {
@@ -118,6 +136,7 @@ class Mahasiswa extends CI_Controller
 			"telepon" => $this->input->post("teleponnya"),
 			"jurusan" => $this->input->post("jurusannya"),
 			"token" => $this->input->post("tokennya"),
+			$this->key_name => $this->key_value
 		);
 
 		$update = json_decode(

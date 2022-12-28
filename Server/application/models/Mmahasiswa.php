@@ -1,11 +1,12 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 
-class Mmahasiswa extends CI_Model {
+class Mmahasiswa extends CI_Model
+{
 
     // buat method untuk tampil data
-    function get_data($token) 
+    function get_data($token)
     {
         // kalau cuma 1 field
         // $this->db->from("npm");   
@@ -13,7 +14,7 @@ class Mmahasiswa extends CI_Model {
         // kalau * from
         // $this->db->from("tb_mahasiswa");   
         // $this->db->order_by("npm", "DESC");
-        
+
         // keamanan di database menggunakan alias pada database
         $this->db->select("
             id AS id_mhs,
@@ -24,10 +25,10 @@ class Mmahasiswa extends CI_Model {
         ");
 
         $this->db->from("tb_mahasiswa");
-        
+
         // jika token terisi
         // if($token != "") {} opsi lain
-        if(!empty($token)) {
+        if (!empty($token)) {
             $this->db->where("TO_BASE64(npm) = '$token' OR TO_BASE64(nama) = '$token' ");
         }
 
@@ -36,6 +37,19 @@ class Mmahasiswa extends CI_Model {
         $query = $this->db->get()->result();
         return $query;
     }
+
+    // function get_data($username)
+    // {
+
+    //     // ambil key aja
+    //     $this->db->select("username,key");
+
+    //     $this->db->from("tb_auth");
+    //     $this->db->where("username = '$username'");
+
+    //     $query = $this->db->get()->result();
+    //     return $query;
+    // }
 
     function delete_data($token)
     {
@@ -49,7 +63,7 @@ class Mmahasiswa extends CI_Model {
         $query = $this->db->get()->result();
 
         // jika npm ditemukan
-        if(count($query) == 1) {
+        if (count($query) == 1) {
             // $this->db->where("npm = '$token'");
             $this->db->where("TO_BASE64(npm) = '$token'");
             $this->db->delete("tb_mahasiswa");
@@ -57,7 +71,7 @@ class Mmahasiswa extends CI_Model {
             // kirim nilai 1
             // $hasil = "Y";
             $hasil = 1;
-        } 
+        }
         // jika npm tidak ditemukan
         else {
             // kirim nilai hasil 0
@@ -67,7 +81,7 @@ class Mmahasiswa extends CI_Model {
         // kirim variabel hasil ke controller mahasiswa
         return $hasil;
     }
-    
+
     // buat fungsi simpan data
     function save_data($npm, $nama, $telepon, $jurusan, $token)
     {
@@ -81,7 +95,7 @@ class Mmahasiswa extends CI_Model {
         $query = $this->db->get()->result();
 
         // jika npm tidak ditemukan
-        if(count($query) == 0) {
+        if (count($query) == 0) {
             // isi nilai untuk masing" field
             $data = array(
                 "npm" => $npm,
@@ -93,7 +107,7 @@ class Mmahasiswa extends CI_Model {
             // simpan data
             $this->db->insert("tb_mahasiswa", $data);
             $hasil = 0;
-        } 
+        }
         // jika npm ditemukan
         else {
             $hasil = 1;
@@ -105,7 +119,7 @@ class Mmahasiswa extends CI_Model {
     // fungsi untuk ubah data
     function update_data($npm, $nama, $telepon, $jurusan, $token)
     {
-       // check apakah npm ada / tidak
+        // check apakah npm ada / tidak
         $this->db->select("npm");
         $this->db->from("tb_mahasiswa");
         // $this->db->where("npm = '$token'");
@@ -117,26 +131,24 @@ class Mmahasiswa extends CI_Model {
         $query = $this->db->get()->result();
 
         // jika npm tidak ditemukan
-        if(count($query) == 0) {
+        if (count($query) == 0) {
             $data = array(
                 "npm" => $npm,
                 "nama" => $nama,
                 "telepon" => $telepon,
                 "jurusan" => $jurusan,
             );
-            
+
             // $this->db->where("TO_BASE64(npm) != '$token' AND npm = '$npm'");
             $this->db->where("TO_BASE64(npm) = '$token'");
             // , $data untuk mengirim data dari parameter
             $this->db->update("tb_mahasiswa", $data);
             // kirim nilai $hasil = 0;
             $hasil = 0;
-        } 
-        else {
+        } else {
             $hasil = 1;
         }
-        
+
         return $hasil;
     }
-
 }

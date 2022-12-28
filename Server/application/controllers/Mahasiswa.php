@@ -44,6 +44,16 @@ class Mahasiswa extends Server
         }
     }
 
+
+    // untuk get username
+    // function service_get()
+    // {
+    //     $username = $this->get("username");
+    //     $hasil = $this->model->get_data($username);
+
+    //     $this->response(array("auth" => $hasil), 200);
+    // }
+
     // membuat fungsi POST
     function service_post()
     {
